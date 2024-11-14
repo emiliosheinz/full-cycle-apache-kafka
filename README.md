@@ -28,3 +28,8 @@ Below is a diagram that shows how these concepts are connected:
 
 ![Kafka architecture](./docs/images/kafka-architecture.png)
 
+### Topics
+
+Topics are the channels where messages are sent to and consumed from. When messages are sent to a topic, they are stored in partitions. Each partition is an ordered, immutable sequence of messages that is continually appended to—a commit log. This allows multiple consumers to read from a topic in parallel, for example.
+
+![topics](./docs/images/topics.png)
