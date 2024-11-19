@@ -45,3 +45,9 @@ Partitions are the way Kafka scales topics. Each topic can be divided into parti
 #### Ensuring delivery order
 
 Messages are appended to partitions in the order they are sent. This means that messages sent to different partitions can be consumed in a different order than they were sent. If you need to ensure that messages are consumed in the order they were sent, you can use a single partition for a topic which can be done by using the same key for all messages.
+
+#### Distributed partitions
+
+Partitions can be distributed across different brokers. This allows Kafka to scale topics horizontally. Each partition is replicated across multiple brokers to ensure fault tolerance. This means that if a broker goes down, another broker can take over.
+ 
+The number of replicas for a given partition is configurable through the `replication.factor` configuration. The default value is 1, but it's recommended to set it to at least 2 to ensure fault tolerance and 3 or more for mission-critical applications that require high availability.
