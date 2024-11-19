@@ -33,3 +33,15 @@ Below is a diagram that shows how these concepts are connected:
 Topics are the channels where messages are sent to and consumed from. When messages are sent to a topic, they are stored in partitions. Each partition is an ordered, immutable sequence of messages that is continually appended to—a commit log. This allows multiple consumers to read from a topic in parallel, for example.
 
 ![topics](./docs/images/topics.png)
+
+#### Anatomy of a record
+
+A record is the basic unit of data in Kafka. It consists of **headers**, a **key**, a **value**, and a **timestamp**. The key and the value are both byte arrays, and the timestamp is a long number. The key is optional, and the value can be anything you want.
+
+### Partitions
+
+Partitions are the way Kafka scales topics. Each topic can be divided into partitions, which can be distributed across different brokers. This allows Kafka to handle a large number of messages per second and store large amounts of data for a long period of time.
+
+#### Ensuring delivery order
+
+Messages are appended to partitions in the order they are sent. This means that messages sent to different partitions can be consumed in a different order than they were sent. If you need to ensure that messages are consumed in the order they were sent, you can use a single partition for a topic which can be done by using the same key for all messages.
