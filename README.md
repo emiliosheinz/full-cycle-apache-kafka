@@ -51,3 +51,27 @@ Messages are appended to partitions in the order they are sent. This means that 
 Partitions can be distributed across different brokers. This allows Kafka to scale topics horizontally. Each partition is replicated across multiple brokers to ensure fault tolerance. This means that if a broker goes down, another broker can take over.
  
 The number of replicas for a given partition is configurable through the `replication.factor` configuration. The default value is 1, but it's recommended to set it to at least 2 to ensure fault tolerance and 3 or more for mission-critical applications that require high availability.
+
+#### Partition leadership
+
+Each partition has a leader and one or more followers. The leader is responsible for handling read and write requests for the partition and the followers simply replicate the leader's data. If, for any reason, the leader goes down, one of the followers becomes the new leader.
+
+### Delivery guarantees
+
+Kafka provides the following delivery guarantees:
+
+- **At most once**: Messages can be lost but are never redelivered. If the consumer chooses the latest messages, it means it will only see the new messages arriving since it registered. The consumer will miss any messages produced while it is unavailable. This could be desirable when the consumer is interested in the current state and losing old messages is acceptable.
+
+- **At least once**: Messages are never lost but can be redelivered. If losing messages is not acceptable, it can choose to read the earliest messages and in this case, the broker returns the messages since its last committed offset.
+
+- **Exactly once**: Messages are never lost and are never redelivered. This is the most complex guarantee and requires coordination between producers and consumers. It's not always possible to achieve this guarantee, but Kafka provides the tools to make it possible.
+
+### Idempotent producers
+
+Kafka provides a feature called idempotent producers that allows you to produce messages with exactly once semantics. This means that even if a producer sends the same message multiple times, it will only be written once to the partition. This is achieved by assigning a sequence number to each message and deduplicating messages with the same sequence number.
+
+### Consumer groups
+
+Consumers can be grouped together to consume messages from a topic in parallel. Each consumer in the group is assigned a subset of the partitions in the topic. This allows Kafka to scale the number of consumers and handle a large number of messages per second.
+
+Only one consumer in the group can consume messages from a partition at a time. This means that if you have more consumers in the same group than partitions, some consumers will be idle. If you have more partitions than consumers, some consumers will consume messages from multiple partitions. In other words, only consumers in different groups can consume messages from the same partition at the same time.
