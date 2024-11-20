@@ -75,3 +75,9 @@ Kafka provides a feature called idempotent producers that allows you to produce 
 Consumers can be grouped together to consume messages from a topic in parallel. Each consumer in the group is assigned a subset of the partitions in the topic. This allows Kafka to scale the number of consumers and handle a large number of messages per second.
 
 Only one consumer in the group can consume messages from a partition at a time. This means that if you have more consumers in the same group than partitions, some consumers will be idle. If you have more partitions than consumers, some consumers will consume messages from multiple partitions. In other words, only consumers in different groups can consume messages from the same partition at the same time.
+
+```
+kafka-topics --create --topic=teste --bootstrap-server=localhost:9092 --partitions=3
+kafka-topics --list --bootstrap-server=localhost:9092
+kafka-topics --bootstrap-server=localhost:9092 --topic=teste --describe
+```
