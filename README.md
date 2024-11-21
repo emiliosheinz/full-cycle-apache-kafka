@@ -80,4 +80,7 @@ Only one consumer in the group can consume messages from a partition at a time. 
 kafka-topics --create --topic=teste --bootstrap-server=localhost:9092 --partitions=3
 kafka-topics --list --bootstrap-server=localhost:9092
 kafka-topics --bootstrap-server=localhost:9092 --topic=teste --describe
+kafka-console-consumer --bootstrap-server=localhost:9092 --topic=teste
+kafka-console-producer --bootstrap-server=localhost:9092 --topic=teste
+kafka-console-consumer --bootstrap-server=localhost:9092 --topic=teste --from-beginning
 ```
