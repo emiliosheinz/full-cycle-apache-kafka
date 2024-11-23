@@ -76,12 +76,41 @@ Consumers can be grouped together to consume messages from a topic in parallel. 
 
 Only one consumer in the group can consume messages from a partition at a time. This means that if you have more consumers in the same group than partitions, some consumers will be idle. If you have more partitions than consumers, some consumers will consume messages from multiple partitions. In other words, only consumers in different groups can consume messages from the same partition at the same time.
 
+### Some usefull commands
 ```
-kafka-topics --create --topic=teste --bootstrap-server=localhost:9092 --partitions=3
+kafka-topics --create --topic=teste --partitions=3 --bootstrap-server=localhost:9092
 kafka-topics --list --bootstrap-server=localhost:9092
-kafka-topics --bootstrap-server=localhost:9092 --topic=teste --describe
-kafka-console-consumer --bootstrap-server=localhost:9092 --topic=teste
-kafka-console-producer --bootstrap-server=localhost:9092 --topic=teste
-kafka-console-consumer --bootstrap-server=localhost:9092 --topic=teste --from-beginning
+kafka-topics --topic=teste --describe --bootstrap-server=localhost:9092
 kafka-topics --create --bootstrap-server=localhost:9092 --topic=teste --partitions=3
+
+kafka-console-producer --bootstrap-server=localhost:9092 --topic=teste
+
+kafka-console-consumer --bootstrap-server=localhost:9092 --topic=teste
+kafka-console-consumer --bootstrap-server=localhost:9092 --topic=teste --from-beginning
 ```
+## Kafka Connect
+
+Kafka Connect is a free and open-source component of Apache Kafka that works as a centralized data hub for simple integrations between databases, key-value stores, search indexes and file systems.
+
+### Standalone Workers
+
+Standalone workers in Kafka Connect are used for simpler, single-instance deployments. All configurations, including connectors and offsets, are stored locally on the worker's filesystem. This mode is suitable for development, testing, or small-scale production setups where high availability or scalability is not a concern. As only one instance is running, it cannot share workloads or recover from failures automatically.
+
+### Distributed Workers
+
+Distributed workers operate in a cluster, enabling fault tolerance and scalability. Configurations are stored in Kafka topics, allowing any worker in the cluster to manage tasks. This mode supports rebalancing, where tasks are redistributed automatically if a worker joins or leaves the cluster, making it ideal for production environments with high availability requirements.
+
+### Converters
+
+Tasks utilize converters to translate data between Kafka Connect and the source or sink systems. In other words converters are responsible for serializing and deserializing data, ensuring compatibility between the data formats. Kafka Connect includes built-in converters for common data formats, such as JSON, Avro, and Protobuf, and supports custom converters for other formats.
+
+### DLQ (Dead Letter Queue)
+
+Kafka Connect provides a Dead Letter Queue (DLQ) feature to handle failed records. When a record fails to be processed, it is sent to a separate topic, allowing you to analyze and troubleshoot the issue. This feature is particularly useful for debugging, monitoring, and ensuring data integrity in your data pipelines.
+
+**errors.tolerance config:**
+
+- **none**: The connector will fail immediately if any record fails to be processed.
+- **all**: The connector will continue processing records even if some fail, sending failed records to the DLQ.
+- **all-or-none**: The connector will fail if all records fail to be processed, but continue processing if only some records fail.
+
