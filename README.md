@@ -114,3 +114,10 @@ Kafka Connect provides a Dead Letter Queue (DLQ) feature to handle failed record
 - **all**: The connector will continue processing records even if some fail, sending failed records to the DLQ.
 - **all-or-none**: The connector will fail if all records fail to be processed, but continue processing if only some records fail.
 
+## Managed Services
+
+There are many managed services that provide Kafka as a service. Some of the most popular and used ones are:
+
+- **Confluent Cloud**: It's a fully managed Kafka service provided by Confluent, the company behind Kafka. It's available on all major cloud providers and provides a lot of features like monitoring, security, and schema registry.
+
+- **AWS MSK**: It's a fully managed Kafka service provided by AWS. It's available on all major AWS regions and also provides a lot of features like monitoring, security, and schema registry.
